@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>远程医疗流媒体服务器管理中心</title>
+    <title>深圳市人民医院远程医疗监控系统 - Shenzhen People's Hospital Telemedicine Center</title>
     <style>
         * {
             margin: 0;
@@ -12,33 +12,64 @@
         }
 
         :root {
-            --primary-blue: #2c5aa0;
-            --light-blue: #4a90e2;
-            --accent-red: #e74c3c;
+            --primary-blue: #1565c0;
+            --light-blue: #42a5f5;
+            --accent-red: #d32f2f;
+            --success-green: #2e7d32;
+            --warning-orange: #f57c00;
             --white: #ffffff;
-            --light-gray: #f8fafc;
-            --dark-gray: #34495e;
-            --success-green: #27ae60;
-            --warning-orange: #f39c12;
-            --shadow: 0 4px 20px rgba(44, 90, 160, 0.1);
+            --light-gray: #f5f7fa;
+            --dark-gray: #263238;
+            --hospital-blue: #0d47a1;
+            --medical-green: #00695c;
+            --shadow: 0 4px 20px rgba(13, 71, 161, 0.15);
             --border-radius: 12px;
+            --glow: 0 0 20px rgba(66, 165, 245, 0.3);
         }
 
         body {
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
             color: var(--dark-gray);
             line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 动态背景粒子效果 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(66, 165, 245, 0.4);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
         }
 
         .header {
-            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            background: linear-gradient(135deg, var(--hospital-blue), var(--primary-blue), var(--light-blue));
             color: white;
             padding: 20px 30px;
             box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--light-blue);
         }
 
         .header-content {
@@ -52,28 +83,47 @@
         .logo-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .logo {
-            width: 50px;
-            height: 50px;
-            background: white;
-            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, white, #f8f9fa);
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8em;
-            color: var(--primary-blue);
+            font-size: 2em;
+            color: var(--hospital-blue);
+            box-shadow: var(--glow);
+            animation: pulse-logo 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-logo {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .header-title {
-            font-size: 1.8em;
+            font-size: 1.9em;
             font-weight: bold;
             margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .header-subtitle {
+            font-size: 1em;
+            opacity: 0.95;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .hospital-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
             font-size: 0.9em;
             opacity: 0.9;
         }
@@ -81,26 +131,59 @@
         .status-indicators {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
         }
 
         .status-item {
             text-align: center;
-            padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.15);
             border-radius: var(--border-radius);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .status-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
         }
 
         .status-value {
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: bold;
             color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: counter-up 2s ease-out;
+        }
+
+        @keyframes counter-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .status-label {
-            font-size: 0.8em;
-            opacity: 0.9;
+            font-size: 0.85em;
+            opacity: 0.95;
+            margin-top: 5px;
         }
 
         .main-container {
@@ -108,44 +191,84 @@
             margin: 30px auto;
             padding: 0 30px;
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 300px 1fr;
             gap: 30px;
+            position: relative;
+            z-index: 10;
         }
 
         .sidebar {
-            background: white;
+            background: linear-gradient(145deg, white, #f8f9fa);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             padding: 25px 0;
             height: fit-content;
             position: sticky;
-            top: 120px;
+            top: 140px;
+            border: 1px solid rgba(66, 165, 245, 0.1);
+        }
+
+        .sidebar-header {
+            padding: 0 25px 20px;
+            border-bottom: 2px solid #e3f2fd;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--hospital-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 15px 25px;
+            gap: 15px;
+            padding: 18px 25px;
             color: var(--dark-gray);
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(66, 165, 245, 0.1), rgba(66, 165, 245, 0.05));
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover::before, .nav-item.active::before {
+            width: 100%;
         }
 
         .nav-item:hover, .nav-item.active {
-            background: linear-gradient(90deg, #e3f2fd, #ffffff);
-            color: var(--primary-blue);
-            border-left-color: var(--primary-blue);
+            color: var(--hospital-blue);
+            border-left-color: var(--light-blue);
+            transform: translateX(5px);
         }
 
         .nav-icon {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2em;
+            font-size: 1.3em;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item:hover .nav-icon {
+            transform: scale(1.2);
         }
 
         .content-area {
@@ -155,60 +278,92 @@
 
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px;
         }
 
         .card {
-            background: white;
+            background: linear-gradient(145deg, white, #f8f9fa);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             padding: 25px;
             transition: all 0.3s ease;
             border-top: 4px solid var(--light-blue);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--light-blue), var(--success-green), var(--light-blue));
+            animation: gradient-slide 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient-slide {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(44, 90, 160, 0.15);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(13, 71, 161, 0.2);
         }
 
         .card-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #f1f3f4;
+            border-bottom: 2px solid #e3f2fd;
         }
 
         .card-title {
-            font-size: 1.3em;
+            font-size: 1.4em;
             font-weight: bold;
-            color: var(--primary-blue);
+            color: var(--hospital-blue);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .card-icon {
-            width: 35px;
-            height: 35px;
-            background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--light-blue), var(--hospital-blue));
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.2em;
+            font-size: 1.3em;
+            box-shadow: var(--glow);
+            animation: icon-rotate 4s ease-in-out infinite;
+        }
+
+        @keyframes icon-rotate {
+            0%, 100% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
         }
 
         .metric-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f1f3f4;
+            padding: 15px 0;
+            border-bottom: 1px solid #e3f2fd;
+            transition: all 0.3s ease;
+        }
+
+        .metric-item:hover {
+            background: rgba(66, 165, 245, 0.05);
+            padding-left: 10px;
+            border-radius: 8px;
         }
 
         .metric-item:last-child {
@@ -218,16 +373,28 @@
         .metric-label {
             color: var(--dark-gray);
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .metric-value {
             font-weight: bold;
-            color: var(--primary-blue);
+            color: var(--hospital-blue);
             font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .metric-value.critical {
             color: var(--accent-red);
+            animation: blink-critical 2s infinite;
+        }
+
+        @keyframes blink-critical {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.5; }
         }
 
         .metric-value.success {
@@ -236,30 +403,55 @@
 
         .metric-value.warning {
             color: var(--warning-orange);
+            animation: pulse-warning 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-warning {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .progress-bar {
             width: 100%;
-            height: 12px;
-            background: #e9ecef;
-            border-radius: 6px;
+            height: 14px;
+            background: linear-gradient(90deg, #e3f2fd, #bbdefb);
+            border-radius: 7px;
             overflow: hidden;
-            margin: 10px 0;
+            margin: 12px 0;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .progress-fill {
             height: 100%;
-            border-radius: 6px;
-            transition: width 0.5s ease;
+            border-radius: 7px;
+            transition: width 1s ease;
             position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: progress-shine 2s infinite;
+        }
+
+        @keyframes progress-shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .progress-fill.high {
-            background: linear-gradient(90deg, var(--success-green), var(--warning-orange));
+            background: linear-gradient(90deg, var(--success-green), var(--medical-green));
         }
 
         .progress-fill.medium {
-            background: linear-gradient(90deg, var(--light-blue), var(--primary-blue));
+            background: linear-gradient(90deg, var(--light-blue), var(--hospital-blue));
         }
 
         .progress-fill.critical {
@@ -268,243 +460,173 @@
 
         .device-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
         }
 
         .device-card {
-            background: #f8fafc;
+            background: linear-gradient(145deg, #f8fafc, white);
             border-radius: var(--border-radius);
             padding: 20px;
             text-align: center;
-            border: 2px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-
-        .device-card.online {
-            border-color: var(--success-green);
-            background: #f0fff4;
-        }
-
-        .device-card.offline {
-            border-color: var(--accent-red);
-            background: #fff5f5;
-        }
-
-        .device-card.warning {
-            border-color: var(--warning-orange);
-            background: #fffbf0;
-        }
-
-        .device-icon {
-            width: 50px;
-            height: 50px;
-            margin: 0 auto 15px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            color: white;
-        }
-
-        .device-icon.online {
-            background: linear-gradient(135deg, var(--success-green), #2ecc71);
-        }
-
-        .device-icon.offline {
-            background: linear-gradient(135deg, var(--accent-red), #c0392b);
-        }
-
-        .device-icon.warning {
-            background: linear-gradient(135deg, var(--warning-orange), #e67e22);
-        }
-
-        .device-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: var(--dark-gray);
-        }
-
-        .device-status {
-            font-size: 0.9em;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-weight: bold;
-        }
-
-        .device-status.online {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .device-status.offline {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .device-status.warning {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .video-stream-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .stream-preview {
-            background: #000;
-            border-radius: var(--border-radius);
-            padding: 15px;
-            position: relative;
-            aspect-ratio: 16/9;
-        }
-
-        .stream-overlay {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.9em;
-            font-weight: bold;
-        }
-
-        .stream-controls {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .stream-btn {
-            width: 35px;
-            height: 35px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--primary-blue);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .stream-btn:hover {
-            background: white;
-            transform: scale(1.1);
-        }
-
-        .real-time-chart {
-            height: 300px;
-            background: #f8fafc;
-            border-radius: var(--border-radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border: 2px solid #e3f2fd;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .chart-line {
+        .device-card::before {
+            content: '';
             position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
             bottom: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, transparent, rgba(74, 144, 226, 0.1));
+            background: linear-gradient(45deg, transparent, rgba(66, 165, 245, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .device-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .device-card.online {
+            border-color: var(--success-green);
+            background: linear-gradient(145deg, #f0fff4, #e8f5e8);
+            box-shadow: 0 4px 20px rgba(46, 125, 50, 0.2);
+        }
+
+        .device-card.offline {
+            border-color: var(--accent-red);
+            background: linear-gradient(145deg, #fff5f5, #ffebee);
+            box-shadow: 0 4px 20px rgba(211, 47, 47, 0.2);
+        }
+
+        .device-card.warning {
+            border-color: var(--warning-orange);
+            background: linear-gradient(145deg, #fffbf0, #fff8e1);
+            box-shadow: 0 4px 20px rgba(245, 124, 0, 0.2);
+        }
+
+        .device-icon {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 15px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6em;
+            color: white;
+            position: relative;
+            animation: device-float 3s ease-in-out infinite;
+        }
+
+        @keyframes device-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .device-icon.online {
+            background: linear-gradient(135deg, var(--success-green), var(--medical-green));
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+        }
+
+        .device-icon.offline {
+            background: linear-gradient(135deg, var(--accent-red), #c62828);
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+        }
+
+        .device-icon.warning {
+            background: linear-gradient(135deg, var(--warning-orange), #ef6c00);
+            box-shadow: 0 4px 15px rgba(245, 124, 0, 0.4);
+        }
+
+        .device-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+            font-size: 1.1em;
+        }
+
+        .device-status {
+            font-size: 0.9em;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .device-status.online {
+            background: linear-gradient(90deg, #d4edda, #c3e6cb);
+            color: #155724;
+        }
+
+        .device-status.offline {
+            background: linear-gradient(90deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+        }
+
+        .device-status.warning {
+            background: linear-gradient(90deg, #fff3cd, #ffeaa7);
+            color: #856404;
         }
 
         .alert-panel {
-            background: linear-gradient(135deg, #fff5f5, #ffffff);
+            background: linear-gradient(135deg, #fff5f5, #ffffff, #fff5f5);
             border: 2px solid var(--accent-red);
             border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            animation: alert-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes alert-glow {
+            0%, 100% { box-shadow: 0 4px 20px rgba(211, 47, 47, 0.2); }
+            50% { box-shadow: 0 8px 30px rgba(211, 47, 47, 0.4); }
         }
 
         .alert-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .alert-icon {
-            width: 30px;
-            height: 30px;
-            background: var(--accent-red);
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--accent-red), #c62828);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2em;
+            font-size: 1.3em;
+            animation: alert-pulse 2s infinite;
+        }
+
+        @keyframes alert-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .alert-title {
-            font-size: 1.2em;
+            font-size: 1.3em;
             font-weight: bold;
             color: var(--accent-red);
         }
 
-        .alert-list {
-            list-style: none;
-        }
-
-        .alert-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f3f4;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .alert-item:last-child {
-            border-bottom: none;
-        }
-
-        .alert-time {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .status-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        .status-indicator.online {
-            background: var(--success-green);
-        }
-
-        .status-indicator.offline {
-            background: var(--accent-red);
-        }
-
-        .status-indicator.warning {
-            background: var(--warning-orange);
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-
         .emergency-btn {
-            background: linear-gradient(135deg, var(--accent-red), #c0392b);
+            background: linear-gradient(135deg, var(--accent-red), #c62828);
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 18px 35px;
             border-radius: var(--border-radius);
-            font-size: 1.1em;
+            font-size: 1.2em;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -513,37 +635,136 @@
             bottom: 30px;
             right: 30px;
             z-index: 1000;
+            animation: emergency-pulse 3s infinite;
+        }
+
+        @keyframes emergency-pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(211, 47, 47, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 8px 30px rgba(211, 47, 47, 0.6); }
         }
 
         .emergency-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+            transform: translateY(-5px) scale(1.05);
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            backdrop-filter: blur(5px);
+        .status-indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            animation: status-pulse 2s infinite;
+            margin-right: 8px;
         }
 
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
+        .status-indicator.online {
+            background: var(--success-green);
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.6);
+        }
+
+        .status-indicator.offline {
+            background: var(--accent-red);
+            box-shadow: 0 0 10px rgba(211, 47, 47, 0.6);
+        }
+
+        .status-indicator.warning {
+            background: var(--warning-orange);
+            box-shadow: 0 0 10px rgba(245, 124, 0, 0.6);
+        }
+
+        @keyframes status-pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .real-time-chart {
+            height: 300px;
+            background: linear-gradient(145deg, #f8fafc, white);
             border-radius: var(--border-radius);
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #e3f2fd;
         }
+
+        .stream-preview {
+            background: linear-gradient(145deg, #000, #1a1a1a);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            position: relative;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            border: 2px solid var(--light-blue);
+            box-shadow: var(--glow);
+        }
+
+        .stream-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(66, 165, 245, 0.3);
+        }
+
+        .stream-controls {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .stream-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            color: var(--hospital-blue);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stream-btn:hover {
+            background: white;
+            transform: scale(1.1);
+            box-shadow: var(--glow);
+        }
+
+        /* 医院专业化样式 */
+        .hospital-badge {
+            background: linear-gradient(135deg, var(--medical-green), var(--success-green));
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .department-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .dept-emergency { background: var(--accent-red); }
+        .dept-icu { background: var(--warning-orange); }
+        .dept-surgery { background: var(--light-blue); }
+        .dept-cardiology { background: var(--success-green); }
 
         @media (max-width: 1200px) {
             .main-container {
@@ -575,32 +796,45 @@
     </style>
 </head>
 <body>
+    <!-- 动态背景粒子 -->
+    <div class="particles" id="particles"></div>
+
     <!-- 顶部导航栏 -->
     <header class="header">
         <div class="header-content">
             <div class="logo-section">
                 <div class="logo">🏥</div>
                 <div>
-                    <div class="header-title">远程医疗流媒体服务器</div>
-                    <div class="header-subtitle">Rakuten Mobile × Terabox 管理中心</div>
+                    <div class="header-title">深圳市人民医院远程医疗监控中心</div>
+                    <div class="header-subtitle">Shenzhen People's Hospital Telemedicine Control Center</div>
                 </div>
+                <div class="hospital-badge">三甲医院</div>
+            </div>
+            <div class="hospital-info">
+                <div>📍 深圳市罗湖区东门北路1017号</div>
+                <div>☎️ 急救热线: 120 | 咨询热线: 0755-25533018</div>
+                <div>🌐 www.szspeople.com</div>
             </div>
             <div class="status-indicators">
                 <div class="status-item">
-                    <div class="status-value" id="online-count">23</div>
-                    <div class="status-label">在线用户</div>
+                    <div class="status-value" id="online-count">156</div>
+                    <div class="status-label">在线医护</div>
                 </div>
                 <div class="status-item">
-                    <div class="status-value" id="bandwidth-usage">856</div>
-                    <div class="status-label">带宽 (Mbps)</div>
+                    <div class="status-value" id="bandwidth-usage">2.3</div>
+                    <div class="status-label">带宽 (Gbps)</div>
                 </div>
                 <div class="status-item">
-                    <div class="status-value" id="system-health">99.8%</div>
-                    <div class="status-label">系统健康度</div>
+                    <div class="status-value" id="system-health">99.9%</div>
+                    <div class="status-label">系统可用性</div>
                 </div>
                 <div class="status-item">
-                    <div class="status-value" id="active-streams">8</div>
-                    <div class="status-label">活跃流</div>
+                    <div class="status-value" id="active-streams">24</div>
+                    <div class="status-label">活跃会诊</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="departments">8</div>
+                    <div class="status-label">联网科室</div>
                 </div>
             </div>
         </div>
@@ -609,37 +843,51 @@
     <div class="main-container">
         <!-- 侧边导航栏 -->
         <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">
+                    <span>🩺</span>
+                    医疗监控系统
+                </div>
+            </div>
             <a href="#dashboard" class="nav-item active">
                 <div class="nav-icon">📊</div>
-                <span>仪表板总览</span>
+                <span>总览仪表板</span>
             </a>
             <a href="#video-streams" class="nav-item">
                 <div class="nav-icon">📹</div>
-                <span>视频流管理</span>
+                <span>远程会诊室</span>
             </a>
             <a href="#devices" class="nav-item">
-                <div class="nav-icon">🖥️</div>
-                <span>设备监控</span>
+                <div class="nav-icon">🔬</div>
+                <span>医疗设备监控</span>
             </a>
             <a href="#network" class="nav-item">
                 <div class="nav-icon">🌐</div>
-                <span>网络状态</span>
+                <span>网络拓扑</span>
             </a>
-            <a href="#users" class="nav-item">
-                <div class="nav-icon">👥</div>
-                <span>用户管理</span>
+            <a href="#patients" class="nav-item">
+                <div class="nav-icon">🏥</div>
+                <span>病患管理</span>
+            </a>
+            <a href="#doctors" class="nav-item">
+                <div class="nav-icon">👨‍⚕️</div>
+                <span>医生在线状态</span>
+            </a>
+            <a href="#emergency" class="nav-item">
+                <div class="nav-icon">🚨</div>
+                <span>急救调度</span>
             </a>
             <a href="#security" class="nav-item">
                 <div class="nav-icon">🔒</div>
-                <span>安全中心</span>
+                <span>HIPAA安全</span>
             </a>
             <a href="#analytics" class="nav-item">
                 <div class="nav-icon">📈</div>
-                <span>数据分析</span>
+                <span>医疗数据分析</span>
             </a>
             <a href="#settings" class="nav-item">
                 <div class="nav-icon">⚙️</div>
-                <span>系统设置</span>
+                <span>系统配置</span>
             </a>
         </nav>
 
@@ -649,133 +897,137 @@
             <div class="alert-panel">
                 <div class="alert-header">
                     <div class="alert-icon">⚠️</div>
-                    <div class="alert-title">系统警报</div>
+                    <div class="alert-title">医疗系统实时警报</div>
                 </div>
                 <ul class="alert-list">
                     <li class="alert-item">
-                        <span>摄像头 #3 信号质量下降至85%</span>
+                        <span><span class="department-indicator dept-emergency"></span>急诊科8K摄像头#3信号质量降至87% - 需要技术支持</span>
                         <span class="alert-time">2分钟前</span>
                     </li>
                     <li class="alert-item">
-                        <span>支援医院 #2 网络延迟增高至45ms</span>
+                        <span><span class="department-indicator dept-icu"></span>ICU远程监护连接延迟增高至38ms - 监控中</span>
                         <span class="alert-time">5分钟前</span>
+                    </li>
+                    <li class="alert-item">
+                        <span><span class="department-indicator dept-surgery"></span>手术室#2直播流编码器温度偏高 - 已启动备用系统</span>
+                        <span class="alert-time">8分钟前</span>
                     </li>
                 </ul>
             </div>
 
             <!-- 仪表板网格 -->
             <div class="dashboard-grid">
-                <!-- 带宽监控卡片 -->
+                <!-- 网络带宽监控 -->
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
                             <div class="card-icon">📊</div>
-                            带宽使用监控
+                            医疗专网带宽监控
                         </div>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">总带宽容量</span>
-                        <span class="metric-value">1.12 Gbps</span>
+                        <span class="metric-label">🌐 总带宽容量</span>
+                        <span class="metric-value">10 Gbps</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">当前使用量</span>
-                        <span class="metric-value warning" id="current-bandwidth">856 Mbps</span>
+                        <span class="metric-label">📈 当前使用量</span>
+                        <span class="metric-value warning" id="current-bandwidth">2.34 Gbps</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill high" id="bandwidth-progress" style="width: 76.4%"></div>
+                        <div class="progress-fill medium" id="bandwidth-progress" style="width: 23.4%"></div>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">使用率</span>
-                        <span class="metric-value warning" id="bandwidth-percentage">76.4%</span>
+                        <span class="metric-label">📊 使用率</span>
+                        <span class="metric-value" id="bandwidth-percentage">23.4%</span>
                     </div>
                 </div>
 
-                <!-- 视频流状态 -->
+                <!-- 远程会诊状态 -->
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
-                            <div class="card-icon">📹</div>
-                            8K视频流状态
+                            <div class="card-icon">🩺</div>
+                            实时会诊状态
                         </div>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">8K摄像头 #1</span>
-                        <span class="metric-value success">✅ 正常 140Mbps</span>
+                        <span class="metric-label"><span class="department-indicator dept-surgery"></span>心外科远程手术指导</span>
+                        <span class="metric-value success">✅ 进行中 8K</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">8K摄像头 #2</span>
-                        <span class="metric-value success">✅ 正常 140Mbps</span>
+                        <span class="metric-label"><span class="department-indicator dept-emergency"></span>急诊科多方会诊</span>
+                        <span class="metric-value success">✅ 活跃 4K</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">8K摄像头 #3</span>
-                        <span class="metric-value warning">⚠️ 信号质量85%</span>
+                        <span class="metric-label"><span class="department-indicator dept-icu"></span>ICU危重症会诊</span>
+                        <span class="metric-value warning">⚠️ 网络抖动</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">总编码流数量</span>
-                        <span class="metric-value">8路同时</span>
+                        <span class="metric-label">📹 总会诊室数量</span>
+                        <span class="metric-value">24间同时运行</span>
                     </div>
                 </div>
 
-                <!-- 医院连接状态 -->
+                <!-- 医院网络连接 -->
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
                             <div class="card-icon">🏥</div>
-                            医院连接状态
+                            医联体网络连接
                         </div>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">中心医院</span>
+                        <span class="metric-label">🏥 深圳市人民医院总院</span>
                         <span class="metric-value success">
                             <div class="status-indicator online"></div>
-                            在线 - 1ms延迟
+                            在线 - 1ms
                         </span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">支援医院 #1</span>
+                        <span class="metric-label">🏥 龙华分院</span>
                         <span class="metric-value success">
                             <div class="status-indicator online"></div>
-                            在线 - 23ms延迟
+                            在线 - 12ms
                         </span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">支援医院 #2</span>
+                        <span class="metric-label">🏥 福田社康中心</span>
                         <span class="metric-value warning">
                             <div class="status-indicator warning"></div>
-                            在线 - 45ms延迟
+                            在线 - 38ms
                         </span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">总在线用户</span>
-                        <span class="metric-value" id="total-users">23人</span>
+                        <span class="metric-label">👨‍⚕️ 在线医护人员</span>
+                        <span class="metric-value" id="total-medical-staff">156人</span>
                     </div>
                 </div>
 
-                <!-- 系统性能 -->
+                <!-- 医疗设备性能 -->
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
                             <div class="card-icon">🖥️</div>
-                            服务器性能
+                            医疗服务器集群
                         </div>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">CPU使用率</span>
-                        <span class="metric-value warning" id="cpu-usage">68%</span>
+                        <span class="metric-label">💻 CPU使用率</span>
+                        <span class="metric-value warning" id="cpu-usage">72%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill medium" id="cpu-progress" style="width: 68%"></div>
+                        <div class="progress-fill medium" id="cpu-progress" style="width: 72%"></div>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">内存使用率</span>
-                        <span class="metric-value" id="memory-usage">45%</span>
+                        <span class="metric-label">🧠 内存使用率</span>
+                        <span class="metric-value" id="memory-usage">58%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill medium" id="memory-progress" style="width: 45%"></div>
+                        <div class="progress-fill medium" id="memory-progress" style="width: 58%"></div>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">存储空间</span>
-                        <span class="metric-value success">78% 可用</span>
+                        <span class="metric-label">💾 医疗数据存储</span>
+                        <span class="metric-value success">45TB / 100TB</span>
                     </div>
                 </div>
 
@@ -784,181 +1036,195 @@
                     <div class="card-header">
                         <div class="card-title">
                             <div class="card-icon">📈</div>
-                            实时带宽使用趋势
+                            医疗网络实时流量分析
                         </div>
                     </div>
                     <div class="real-time-chart">
-                        <canvas id="bandwidthChart" width="600" height="250"></canvas>
+                        <canvas id="medicalChart" width="800" height="280"></canvas>
                     </div>
                 </div>
 
-                <!-- 设备监控 -->
+                <!-- 医疗设备监控 -->
                 <div class="card" style="grid-column: span 2;">
                     <div class="card-header">
                         <div class="card-title">
-                            <div class="card-icon">📱</div>
-                            设备状态监控
+                            <div class="card-icon">🔬</div>
+                            重要医疗设备状态监控
                         </div>
                     </div>
                     <div class="device-grid">
                         <div class="device-card online">
                             <div class="device-icon online">📹</div>
-                            <div class="device-name">8K摄像头 #1</div>
-                            <div class="device-status online">在线</div>
+                            <div class="device-name">手术室8K摄像头#1</div>
+                            <div class="device-status online">手术中</div>
                         </div>
                         <div class="device-card online">
                             <div class="device-icon online">📹</div>
-                            <div class="device-name">8K摄像头 #2</div>
-                            <div class="device-status online">在线</div>
+                            <div class="device-name">ICU监护摄像头#2</div>
+                            <div class="device-status online">监护中</div>
                         </div>
                         <div class="device-card warning">
                             <div class="device-icon warning">📹</div>
-                            <div class="device-name">8K摄像头 #3</div>
+                            <div class="device-name">急诊科摄像头#3</div>
                             <div class="device-status warning">信号弱</div>
                         </div>
                         <div class="device-card online">
                             <div class="device-icon online">🖥️</div>
-                            <div class="device-name">8K显示器 #1</div>
-                            <div class="device-status online">在线</div>
+                            <div class="device-name">会诊大屏#1</div>
+                            <div class="device-status online">会诊中</div>
                         </div>
                         <div class="device-card online">
                             <div class="device-icon online">🤖</div>
-                            <div class="device-name">AI机器人</div>
-                            <div class="device-status online">巡航中</div>
+                            <div class="device-name">达芬奇手术机器人</div>
+                            <div class="device-status online">待命</div>
                         </div>
                         <div class="device-card online">
                             <div class="device-icon online">📡</div>
-                            <div class="device-name">网络中继</div>
+                            <div class="device-name">医疗专网中继</div>
                             <div class="device-status online">正常</div>
+                        </div>
+                        <div class="device-card online">
+                            <div class="device-icon online">🩻</div>
+                            <div class="device-name">CT影像传输</div>
+                            <div class="device-status online">传输中</div>
+                        </div>
+                        <div class="device-card online">
+                            <div class="device-icon online">🫀</div>
+                            <div class="device-name">心电监护系统</div>
+                            <div class="device-status online">监护中</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 视频流预览 -->
+                <!-- 远程医疗视频流 -->
                 <div class="card" style="grid-column: span 3;">
                     <div class="card-header">
                         <div class="card-title">
                             <div class="card-icon">🎥</div>
-                            实时视频流预览
+                            实时远程医疗视频流监控
                         </div>
                     </div>
                     <div class="video-stream-grid">
                         <div class="stream-preview">
-                            <div class="stream-overlay">8K主摄像头</div>
+                            <div class="stream-overlay">心外科手术室 - 8K直播</div>
                             <iframe style="width: 100%; height: 100%; border: none; border-radius: 8px;" 
                                     src="https://www.youtube.com/embed/QqI9eKQnFL4?autoplay=1&mute=1&loop=1&playlist=QqI9eKQnFL4&controls=0&showinfo=0&rel=0&modestbranding=1">
                             </iframe>
                             <div class="stream-controls">
-                                <button class="stream-btn" title="录制">⏺️</button>
-                                <button class="stream-btn" title="截图">📷</button>
-                                <button class="stream-btn" title="设置">⚙️</button>
+                                <button class="stream-btn" title="录制手术过程">⏺️</button>
+                                <button class="stream-btn" title="截图存档">📷</button>
+                                <button class="stream-btn" title="设备设置">⚙️</button>
                             </div>
                         </div>
                         <div class="stream-preview">
-                            <div class="stream-overlay">8K副摄像头 #1</div>
+                            <div class="stream-overlay">ICU重症监护 - 4K</div>
                             <iframe style="width: 100%; height: 100%; border: none; border-radius: 8px;" 
                                     src="https://www.youtube.com/embed/G5RpJwCJDqc?autoplay=1&mute=1&loop=1&playlist=G5RpJwCJDqc&controls=0&showinfo=0&rel=0&modestbranding=1">
                             </iframe>
                             <div class="stream-controls">
+                                <button class="stream-btn" title="生命体征监控">💗</button>
                                 <button class="stream-btn" title="录制">⏺️</button>
-                                <button class="stream-btn" title="截图">📷</button>
                                 <button class="stream-btn" title="设置">⚙️</button>
                             </div>
                         </div>
                         <div class="stream-preview">
-                            <div class="stream-overlay">8K副摄像头 #2</div>
+                            <div class="stream-overlay">急诊科抢救室 - 4K</div>
                             <iframe style="width: 100%; height: 100%; border: none; border-radius: 8px;" 
                                     src="https://www.youtube.com/embed/hin4n57gPUc?autoplay=1&mute=1&loop=1&playlist=hin4n57gPUc&controls=0&showinfo=0&rel=0&modestbranding=1">
                             </iframe>
                             <div class="stream-controls">
+                                <button class="stream-btn" title="急救指导">🚑</button>
                                 <button class="stream-btn" title="录制">⏺️</button>
-                                <button class="stream-btn" title="截图">📷</button>
                                 <button class="stream-btn" title="设置">⚙️</button>
                             </div>
                         </div>
                         <div class="stream-preview">
-                            <div class="stream-overlay">AI机器人视角</div>
+                            <div class="stream-overlay">康复机器人训练 - AI视角</div>
                             <iframe style="width: 100%; height: 100%; border: none; border-radius: 8px;" 
                                     src="https://www.youtube.com/embed/H9vevyszht4?autoplay=1&mute=1&loop=1&playlist=H9vevyszht4&controls=0&showinfo=0&rel=0&modestbranding=1">
                             </iframe>
                             <div class="stream-controls">
-                                <button class="stream-btn" title="控制机器人">🎮</button>
+                                <button class="stream-btn" title="机器人控制">🎮</button>
                                 <button class="stream-btn" title="录制">⏺️</button>
-                                <button class="stream-btn" title="设置">⚙️</button>
+                                <button class="stream-btn" title="AI分析">🤖</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 网络质量监控 -->
+                <!-- 医疗网络质量 -->
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
                             <div class="card-icon">📶</div>
-                            网络质量监控
+                            医疗专网质量监控
                         </div>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">平均延迟</span>
-                        <span class="metric-value success" id="avg-latency">23ms</span>
+                        <span class="metric-label">⚡ 平均网络延迟</span>
+                        <span class="metric-value success" id="avg-latency">18ms</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">丢包率</span>
-                        <span class="metric-value success" id="packet-loss">0.02%</span>
+                        <span class="metric-label">📉 数据丢包率</span>
+                        <span class="metric-value success" id="packet-loss">0.01%</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">WiFi 7连接数</span>
-                        <span class="metric-value" id="wifi-connections">12个</span>
+                        <span class="metric-label">📡 WiFi 7医疗终端</span>
+                        <span class="metric-value" id="wifi-connections">89个</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">网络安全状态</span>
-                        <span class="metric-value success">🔒 安全隔离</span>
+                        <span class="metric-label">🔒 HIPAA安全状态</span>
+                        <span class="metric-value success">🛡️ 完全合规</span>
                     </div>
                 </div>
 
-                <!-- 存储和备份 -->
+                <!-- 医疗数据存储 -->
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
                             <div class="card-icon">💾</div>
-                            存储和备份
+                            医疗数据存储备份
                         </div>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">录像存储空间</span>
-                        <span class="metric-value">2.3TB / 10TB</span>
+                        <span class="metric-label">🗂️ 病历数据存储</span>
+                        <span class="metric-value">45TB / 100TB</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill medium" style="width: 23%"></div>
+                        <div class="progress-fill medium" style="width: 45%"></div>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">自动备份状态</span>
-                        <span class="metric-value success">✅ 已启用</span>
+                        <span class="metric-label">🩻 影像数据备份</span>
+                        <span class="metric-value success">✅ 实时同步</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">最近备份时间</span>
-                        <span class="metric-value">15分钟前</span>
+                        <span class="metric-label">⏰ 最近备份时间</span>
+                        <span class="metric-value">8分钟前</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">🔄 备份频率</span>
+                        <span class="metric-value">每5分钟</span>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- 紧急呼叫按钮 -->
+    <!-- 紧急医疗呼叫按钮 -->
     <button class="emergency-btn" onclick="openEmergencyModal()">
-        🚨 紧急呼叫
+        🚨 启动急救调度
     </button>
 
     <!-- 紧急呼叫模态框 -->
-    <div id="emergencyModal" class="modal">
+    <div id="emergencyModal" class="modal" style="display: none;">
         <div class="modal-content">
-            <h2 style="color: var(--accent-red); margin-bottom: 20px;">🚨 紧急呼叫系统</h2>
-            <p style="margin-bottom: 30px;">是否启动紧急医疗呼叫？这将通知所有在线医护人员。</p>
+            <h2 style="color: var(--accent-red); margin-bottom: 20px;">🚨 深圳市人民医院急救调度系统</h2>
+            <p style="margin-bottom: 30px; font-size: 1.1em;">是否启动紧急医疗调度？这将立即通知所有在线医护人员和救护车队。</p>
             <div style="display: flex; gap: 15px; justify-content: center;">
-                <button style="background: var(--accent-red); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;" onclick="triggerEmergency()">
-                    确认呼叫
+                <button style="background: var(--accent-red); color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 1.1em; font-weight: bold;" onclick="triggerEmergency()">
+                    🚑 确认启动急救
                 </button>
-                <button style="background: #ccc; color: #333; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;" onclick="closeEmergencyModal()">
+                <button style="background: #ccc; color: #333; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 1.1em;" onclick="closeEmergencyModal()">
                     取消
                 </button>
             </div>
@@ -966,51 +1232,77 @@
     </div>
 
     <script>
-        // 实时数据更新
-        function updateRealTimeData() {
+        // 创建动态背景粒子
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 实时医疗数据更新
+        function updateMedicalData() {
             // 更新带宽使用
             const bandwidthElement = document.getElementById('current-bandwidth');
             const bandwidthProgress = document.getElementById('bandwidth-progress');
             const bandwidthPercentage = document.getElementById('bandwidth-percentage');
             
-            const newBandwidth = Math.floor(Math.random() * 200) + 750; // 750-950 Mbps
-            const percentage = (newBandwidth / 1120 * 100).toFixed(1);
+            const newBandwidth = (Math.random() * 1.5 + 1.8).toFixed(2); // 1.8-3.3 Gbps
+            const percentage = (newBandwidth / 10 * 100).toFixed(1);
             
-            bandwidthElement.textContent = newBandwidth + ' Mbps';
+            bandwidthElement.textContent = newBandwidth + ' Gbps';
             bandwidthPercentage.textContent = percentage + '%';
             bandwidthProgress.style.width = percentage + '%';
             
-            // 更新CPU和内存
+            // 更新系统性能
             const cpuUsage = document.getElementById('cpu-usage');
             const cpuProgress = document.getElementById('cpu-progress');
             const memoryUsage = document.getElementById('memory-usage');
             const memoryProgress = document.getElementById('memory-progress');
             
-            const newCpu = Math.floor(Math.random() * 30) + 50; // 50-80%
-            const newMemory = Math.floor(Math.random() * 20) + 40; // 40-60%
+            const newCpu = Math.floor(Math.random() * 25) + 60; // 60-85%
+            const newMemory = Math.floor(Math.random() * 25) + 45; // 45-70%
             
             cpuUsage.textContent = newCpu + '%';
             cpuProgress.style.width = newCpu + '%';
             memoryUsage.textContent = newMemory + '%';
             memoryProgress.style.width = newMemory + '%';
             
-            // 更新在线用户数
+            // 更新医护人员数量
             const onlineCount = document.getElementById('online-count');
-            const totalUsers = document.getElementById('total-users');
-            const newUserCount = Math.floor(Math.random() * 10) + 20; // 20-30人
+            const totalStaff = document.getElementById('total-medical-staff');
+            const newStaffCount = Math.floor(Math.random() * 30) + 140; // 140-170人
             
-            onlineCount.textContent = newUserCount;
-            totalUsers.textContent = newUserCount + '人';
+            onlineCount.textContent = newStaffCount;
+            totalStaff.textContent = newStaffCount + '人';
             
-            // 更新延迟
+            // 更新网络延迟
             const avgLatency = document.getElementById('avg-latency');
-            const newLatency = Math.floor(Math.random() * 20) + 15; // 15-35ms
+            const newLatency = Math.floor(Math.random() * 15) + 12; // 12-27ms
             avgLatency.textContent = newLatency + 'ms';
             
             // 更新丢包率
             const packetLoss = document.getElementById('packet-loss');
-            const newPacketLoss = (Math.random() * 0.1).toFixed(3); // 0-0.1%
+            const newPacketLoss = (Math.random() * 0.05).toFixed(3); // 0-0.05%
             packetLoss.textContent = newPacketLoss + '%';
+            
+            // 更新活跃会诊数
+            const activeStreams = document.getElementById('active-streams');
+            const newStreams = Math.floor(Math.random() * 8) + 20; // 20-28
+            activeStreams.textContent = newStreams;
+            
+            // 更新WiFi连接数
+            const wifiConnections = document.getElementById('wifi-connections');
+            const newWifi = Math.floor(Math.random() * 20) + 80; // 80-100个
+            wifiConnections.textContent = newWifi + '个';
         }
 
         // 导航菜单切换
@@ -1035,7 +1327,7 @@
         }
 
         function triggerEmergency() {
-            alert('🚨 紧急呼叫已发送！所有在线医护人员已收到通知。');
+            alert('🚨 急救调度已启动！\n✅ 所有在线医护人员已收到通知\n🚑 救护车队已进入待命状态\n📱 急救指挥中心已接收警报');
             closeEmergencyModal();
             
             // 添加紧急警报到系统
@@ -1043,15 +1335,17 @@
             const newAlert = document.createElement('li');
             newAlert.className = 'alert-item';
             newAlert.innerHTML = `
-                <span style="color: var(--accent-red); font-weight: bold;">🚨 紧急呼叫已触发</span>
+                <span style="color: var(--accent-red); font-weight: bold;">🚨 紧急医疗调度已启动 - 全院进入急救状态</span>
                 <span class="alert-time">刚刚</span>
             `;
             alertList.insertBefore(newAlert, alertList.firstChild);
         }
 
-        // 绘制实时图表
-        function drawBandwidthChart() {
-            const canvas = document.getElementById('bandwidthChart');
+        // 绘制医疗实时图表
+        function drawMedicalChart() {
+            const canvas = document.getElementById('medicalChart');
+            if (!canvas) return;
+            
             const ctx = canvas.getContext('2d');
             const width = canvas.width;
             const height = canvas.height;
@@ -1059,58 +1353,99 @@
             // 清除画布
             ctx.clearRect(0, 0, width, height);
             
-            // 设置样式
-            ctx.strokeStyle = '#4a90e2';
-            ctx.lineWidth = 3;
-            ctx.fillStyle = 'rgba(74, 144, 226, 0.1)';
+            // 绘制背景网格
+            ctx.strokeStyle = 'rgba(66, 165, 245, 0.1)';
+            ctx.lineWidth = 1;
             
-            // 生成数据点
+            for (let i = 0; i <= 10; i++) {
+                const y = (i / 10) * height;
+                const x = (i / 10) * width;
+                
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            
+            // 绘制医疗数据流量线
             const dataPoints = [];
             const currentTime = Date.now();
-            for (let i = 0; i < 60; i++) {
-                const value = Math.sin(i * 0.1) * 100 + Math.random() * 50 + 400;
+            for (let i = 0; i < 100; i++) {
+                const baseValue = Math.sin(i * 0.1) * 150 + Math.cos(i * 0.05) * 80;
+                const noise = Math.random() * 100 - 50;
+                const value = Math.max(50, baseValue + noise + 300);
                 dataPoints.push(value);
             }
             
-            // 绘制线图
+            // 绘制主要流量线（蓝色）
+            ctx.strokeStyle = '#1565c0';
+            ctx.lineWidth = 3;
             ctx.beginPath();
-            ctx.moveTo(0, height - (dataPoints[0] / 1000) * height);
+            ctx.moveTo(0, height - (dataPoints[0] / 800) * height);
             
             for (let i = 1; i < dataPoints.length; i++) {
                 const x = (i / (dataPoints.length - 1)) * width;
-                const y = height - (dataPoints[i] / 1000) * height;
+                const y = height - (dataPoints[i] / 800) * height;
                 ctx.lineTo(x, y);
             }
-            
             ctx.stroke();
             
             // 绘制填充区域
+            ctx.fillStyle = 'rgba(21, 101, 192, 0.1)';
             ctx.lineTo(width, height);
             ctx.lineTo(0, height);
             ctx.closePath();
             ctx.fill();
             
-            // 添加网格线
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.lineWidth = 1;
-            
-            for (let i = 0; i <= 10; i++) {
-                const y = (i / 10) * height;
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(width, y);
-                ctx.stroke();
+            // 绘制急救数据线（红色）
+            const emergencyData = [];
+            for (let i = 0; i < 100; i++) {
+                const value = Math.random() * 100 + 50;
+                emergencyData.push(value);
             }
+            
+            ctx.strokeStyle = '#d32f2f';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, height - (emergencyData[0] / 800) * height);
+            
+            for (let i = 1; i < emergencyData.length; i++) {
+                const x = (i / (emergencyData.length - 1)) * width;
+                const y = height - (emergencyData[i] / 800) * height;
+                ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // 添加图例
+            ctx.fillStyle = '#1565c0';
+            ctx.fillRect(20, 20, 15, 3);
+            ctx.fillStyle = '#263238';
+            ctx.font = '12px Arial';
+            ctx.fillText('医疗数据流量', 45, 30);
+            
+            ctx.fillStyle = '#d32f2f';
+            ctx.fillRect(20, 40, 15, 3);
+            ctx.fillText('急救调度流量', 45, 50);
         }
 
-        // 模拟设备状态变化
+        // 模拟医疗设备状态变化
         function updateDeviceStatus() {
             const deviceCards = document.querySelectorAll('.device-card');
             deviceCards.forEach((card, index) => {
-                if (Math.random() < 0.1) { // 10%概率状态变化
-                    const statusClasses = ['online', 'warning', 'offline'];
+                if (Math.random() < 0.05) { // 5%概率状态变化（医疗设备更稳定）
+                    const statusClasses = ['online', 'warning'];
+                    // 医疗设备很少完全离线，主要是在线和警告状态
+                    const weights = [0.9, 0.1]; // 90%在线，10%警告
+                    const randomValue = Math.random();
+                    let newStatus = randomValue < weights[0] ? statusClasses[0] : statusClasses[1];
+                    
                     const currentStatus = card.classList[1];
-                    let newStatus = statusClasses[Math.floor(Math.random() * statusClasses.length)];
+                    if (currentStatus === newStatus) return;
                     
                     // 移除旧状态
                     card.classList.remove(currentStatus);
@@ -1124,46 +1459,23 @@
                     
                     // 更新状态文字
                     const statusText = {
-                        'online': '在线',
-                        'warning': '信号弱',
-                        'offline': '离线'
+                        'online': ['运行中', '监护中', '待命', '正常', '传输中'],
+                        'warning': ['信号弱', '需维护', '温度高'],
+                        'offline': ['维护中']
                     };
-                    card.querySelector('.device-status').textContent = statusText[newStatus];
+                    const textOptions = statusText[newStatus];
+                    const randomText = textOptions[Math.floor(Math.random() * textOptions.length)];
+                    card.querySelector('.device-status').textContent = randomText;
                 }
             });
         }
 
-        // 初始化和定时更新
-        document.addEventListener('DOMContentLoaded', function() {
-            // 绘制初始图表
-            drawBandwidthChart();
-            
-            // 每3秒更新实时数据
-            setInterval(updateRealTimeData, 3000);
-            
-            // 每5秒重绘图表
-            setInterval(drawBandwidthChart, 5000);
-            
-            // 每10秒更新设备状态
-            setInterval(updateDeviceStatus, 10000);
-            
-            // 初始化流媒体按钮事件
-            document.querySelectorAll('.stream-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const title = this.getAttribute('title');
-                    alert(`执行操作: ${title}`);
-                });
-            });
-        });
-
-        // 点击模态框外部关闭
-        window.addEventListener('click', function(event) {
-            const modal = document.getElementById('emergencyModal');
-            if (event.target === modal) {
-                closeEmergencyModal();
-            }
-        });
-    </script>
-</body>
-</html>
-                            
+        // 添加医疗系统特效
+        function addMedicalEffects() {
+            // 随机添加医疗警报
+            if (Math.random() < 0.003) { // 0.3%概率
+                const alertTypes = [
+                    { dept: 'dept-emergency', text: '急诊科新增重症患者 - 启动绿色通道' },
+                    { dept: 'dept-icu', text: 'ICU床位紧张 - 协调转院事宜' },
+                    { dept: 'dept-surgery', text: '手术室消毒完成 - 准备下台手术' },
+                    { dept:
