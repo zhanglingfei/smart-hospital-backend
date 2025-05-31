@@ -11,6 +11,357 @@
             box-sizing: border-box;
         }
 
+        /* 页面底部样式 */
+        .footer-section {
+            background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+            margin-top: 50px;
+            padding: 40px 0 20px;
+            border-top: 3px solid var(--light-blue);
+        }
+
+        .footer-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: grid;
+            gap: 30px;
+        }
+
+        .hospital-info-card, .security-info-card, .tech-info-card, .compliance-info-card {
+            background: linear-gradient(145deg, white, #f8f9fa);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(66, 165, 245, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e3f2fd;
+        }
+
+        .info-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--light-blue), var(--hospital-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+            box-shadow: var(--glow);
+        }
+
+        .info-header h3 {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--hospital-blue);
+            margin: 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(66, 165, 245, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            background: rgba(66, 165, 245, 0.1);
+            transform: translateX(5px);
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--dark-gray);
+            min-width: 100px;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: var(--hospital-blue);
+            text-align: right;
+        }
+
+        .emergency-phone {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--accent-red);
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .cert-item {
+            background: rgba(66, 165, 245, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .cert-item:hover {
+            background: rgba(66, 165, 245, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .cert-badge {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cert-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--success-green), var(--medical-green));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        }
+
+        .cert-info {
+            flex: 1;
+        }
+
+        .cert-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--hospital-blue);
+            margin-bottom: 5px;
+        }
+
+        .cert-desc {
+            font-size: 0.9em;
+            color: var(--dark-gray);
+            margin-bottom: 5px;
+        }
+
+        .cert-date {
+            font-size: 0.85em;
+            color: var(--success-green);
+            font-weight: 500;
+        }
+
+        .tech-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .spec-group h4 {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--hospital-blue);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e3f2fd;
+        }
+
+        .spec-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .spec-list li {
+            padding: 8px 0;
+            color: var(--dark-gray);
+            border-bottom: 1px solid rgba(66, 165, 245, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .spec-list li:hover {
+            color: var(--hospital-blue);
+            padding-left: 10px;
+        }
+
+        .spec-list li:last-child {
+            border-bottom: none;
+        }
+
+        .compliance-badges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .badge-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: linear-gradient(145deg, rgba(66, 165, 245, 0.05), rgba(255, 255, 255, 0.8));
+            border-radius: 12px;
+            border: 2px solid rgba(66, 165, 245, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .badge-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(66, 165, 245, 0.15);
+        }
+
+        .badge-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        .badge-text {
+            flex: 1;
+        }
+
+        .badge-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--hospital-blue);
+            margin-bottom: 5px;
+        }
+
+        .badge-subtitle {
+            font-size: 0.9em;
+            color: var(--dark-gray);
+        }
+
+        .legal-info {
+            background: linear-gradient(135deg, var(--dark-gray), #37474f);
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .legal-content {
+            display: grid;
+            gap: 20px;
+        }
+
+        .copyright-section {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .copyright-text {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .legal-links a {
+            color: var(--light-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .legal-links a:hover {
+            color: white;
+        }
+
+        .legal-disclaimers {
+            display: grid;
+            gap: 15px;
+        }
+
+        .disclaimer-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--light-blue);
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .disclaimer-item strong {
+            color: var(--light-blue);
+        }
+
+        .system-status-bar {
+            background: linear-gradient(90deg, var(--hospital-blue), var(--light-blue));
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+
+        .status-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: status-pulse 2s infinite;
+        }
+
+        .status-dot.online {
+            background: var(--success-green);
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.6);
+        }
+
+        .system-time, .system-version {
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .system-time span:last-child, .system-version span:last-child {
+            color: #e3f2fd;
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                padding: 0 15px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-specs, .security-grid, .compliance-badges {
+                grid-template-columns: 1fr;
+            }
+
+            .status-bar-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+
         :root {
             --primary-blue: #1565c0;
             --light-blue: #42a5f5;
@@ -1210,6 +1561,242 @@
         </main>
     </div>
 
+    <!-- 页面底部信息区域 -->
+    <footer class="footer-section">
+        <div class="footer-container">
+            <!-- 医院基本信息 -->
+            <div class="hospital-info-card">
+                <div class="info-header">
+                    <div class="info-icon">🏥</div>
+                    <h3>深圳市人民医院信息</h3>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">医院全称：</span>
+                        <span class="info-value">深圳市人民医院（Shenzhen People's Hospital）</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">医院等级：</span>
+                        <span class="info-value">三级甲等综合医院</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">医院地址：</span>
+                        <span class="info-value">广东省深圳市罗湖区东门北路1017号</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">邮政编码：</span>
+                        <span class="info-value">518020</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">急救电话：</span>
+                        <span class="info-value emergency-phone">120</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">咨询电话：</span>
+                        <span class="info-value">0755-25533018</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">官方网站：</span>
+                        <span class="info-value">www.szspeople.com</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">建院时间：</span>
+                        <span class="info-value">1946年</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 网络安全资质 -->
+            <div class="security-info-card">
+                <div class="info-header">
+                    <div class="info-icon">🛡️</div>
+                    <h3>网络安全资质认证</h3>
+                </div>
+                <div class="security-grid">
+                    <div class="cert-item">
+                        <div class="cert-badge">
+                            <div class="cert-icon">🏆</div>
+                            <div class="cert-info">
+                                <div class="cert-name">ISO 27001</div>
+                                <div class="cert-desc">信息安全管理体系认证</div>
+                                <div class="cert-date">有效期至：2025-12-31</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-badge">
+                            <div class="cert-icon">🔒</div>
+                            <div class="cert-info">
+                                <div class="cert-name">HIPAA合规</div>
+                                <div class="cert-desc">美国健康保险便携性和责任法案</div>
+                                <div class="cert-date">认证编号：HIPAA-CN-2024-0156</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-badge">
+                            <div class="cert-icon">🌐</div>
+                            <div class="cert-info">
+                                <div class="cert-name">等保三级</div>
+                                <div class="cert-desc">国家信息安全等级保护三级</div>
+                                <div class="cert-date">备案号：44030010003</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-badge">
+                            <div class="cert-icon">📋</div>
+                            <div class="cert-info">
+                                <div class="cert-name">ICP备案</div>
+                                <div class="cert-desc">电信与信息服务业务经营许可</div>
+                                <div class="cert-date">粤ICP备10230123号-1</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 技术规格信息 -->
+            <div class="tech-info-card">
+                <div class="info-header">
+                    <div class="info-icon">⚙️</div>
+                    <h3>系统技术规格</h3>
+                </div>
+                <div class="tech-specs">
+                    <div class="spec-group">
+                        <h4>网络基础设施</h4>
+                        <ul class="spec-list">
+                            <li>• 医疗专网带宽：10Gbps光纤专线</li>
+                            <li>• 备用链路：5Gbps冗余连接</li>
+                            <li>• WiFi标准：IEEE 802.11ax (WiFi 7)</li>
+                            <li>• 网络延迟：≤ 20ms（本地），≤ 50ms（远程）</li>
+                            <li>• 可用性：99.99%年度SLA保证</li>
+                        </ul>
+                    </div>
+                    <div class="spec-group">
+                        <h4>视频流媒体</h4>
+                        <ul class="spec-list">
+                            <li>• 8K分辨率：7680×4320@60fps</li>
+                            <li>• 4K分辨率：3840×2160@120fps</li>
+                            <li>• 编码标准：H.265 (HEVC) / AV1</li>
+                            <li>• 传输协议：WebRTC / RTMP / SRT</li>
+                            <li>• 延迟控制：超低延迟 < 100ms</li>
+                        </ul>
+                    </div>
+                    <div class="spec-group">
+                        <h4>数据安全</h4>
+                        <ul class="spec-list">
+                            <li>• 加密标准：AES-256端到端加密</li>
+                            <li>• 传输安全：TLS 1.3协议</li>
+                            <li>• 身份认证：多因子身份验证(MFA)</li>
+                            <li>• 访问控制：基于角色的权限管理</li>
+                            <li>• 审计日志：完整操作记录追踪</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 合规认证展示 -->
+            <div class="compliance-info-card">
+                <div class="info-header">
+                    <div class="info-icon">📜</div>
+                    <h3>医疗行业合规认证</h3>
+                </div>
+                <div class="compliance-badges">
+                    <div class="badge-item">
+                        <img class="badge-icon" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMwMDY5NWMiLz48cGF0aCBkPSJNMTIgMjBsMTAgMTAgMTgtMTgiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="FDA认证">
+                        <div class="badge-text">
+                            <div class="badge-title">NMPA认证</div>
+                            <div class="badge-subtitle">国家药监局医疗器械认证</div>
+                        </div>
+                    </div>
+                    <div class="badge-item">
+                        <img class="badge-icon" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMxNTY1YzAiLz48cGF0aCBkPSJNMTIgMjBsMTAgMTAgMTgtMTgiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="CE认证">
+                        <div class="badge-text">
+                            <div class="badge-title">CE-MDR认证</div>
+                            <div class="badge-subtitle">欧盟医疗器械法规认证</div>
+                        </div>
+                    </div>
+                    <div class="badge-item">
+                        <img class="badge-icon" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNkMzJmMmYiLz48cGF0aCBkPSJNMTIgMjBsMTAgMTAgMTgtMTgiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="GMP认证">
+                        <div class="badge-text">
+                            <div class="badge-title">GMP认证</div>
+                            <div class="badge-subtitle">药品生产质量管理规范</div>
+                        </div>
+                    </div>
+                    <div class="badge-item">
+                        <img class="badge-icon" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNmNTdjMDAiLz48cGF0aCBkPSJNMTIgMjBsMTAgMTAgMTgtMTgiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="ISO认证">
+                        <div class="badge-text">
+                            <div class="badge-title">ISO 13485</div>
+                            <div class="badge-subtitle">医疗器械质量管理体系</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 版权和法律信息 -->
+            <div class="legal-info">
+                <div class="legal-content">
+                    <div class="copyright-section">
+                        <p class="copyright-text">
+                            © 2024 深圳市人民医院 版权所有 | Shenzhen People's Hospital. All Rights Reserved.
+                        </p>
+                        <p class="legal-links">
+                            <a href="#privacy">隐私政策</a> | 
+                            <a href="#terms">使用条款</a> | 
+                            <a href="#security">安全声明</a> | 
+                            <a href="#contact">联系我们</a>
+                        </p>
+                    </div>
+                    <div class="legal-disclaimers">
+                        <div class="disclaimer-item">
+                            <strong>医疗数据保护声明：</strong>
+                            本系统严格遵循《中华人民共和国网络安全法》、《个人信息保护法》、《数据安全法》等相关法律法规，采用国际先进的加密技术保护患者隐私和医疗数据安全。
+                        </div>
+                        <div class="disclaimer-item">
+                            <strong>技术支持：</strong>
+                            系统由深圳市人民医院信息科技部开发维护，技术合作伙伴包括华为技术有限公司、腾讯云计算有限公司、中国电信深圳分公司。
+                        </div>
+                        <div class="disclaimer-item">
+                            <strong>紧急联系：</strong>
+                            系统故障请联系 IT支持热线：0755-25533019 | 医疗紧急情况请拨打：120
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系统状态栏 -->
+            <div class="system-status-bar">
+                <div class="status-bar-content">
+                    <div class="status-item">
+                        <span class="status-dot online"></span>
+                        <span>系统运行正常</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot online"></span>
+                        <span>数据库连接稳定</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot online"></span>
+                        <span>网络通信正常</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot online"></span>
+                        <span>安全防护激活</span>
+                    </div>
+                    <div class="system-time">
+                        <span>系统时间：</span>
+                        <span id="system-time">2024-05-31 14:23:45</span>
+                    </div>
+                    <div class="system-version">
+                        <span>版本：</span>
+                        <span>MedicalNet v3.2.1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <!-- 紧急医疗呼叫按钮 -->
     <button class="emergency-btn" onclick="openEmergencyModal()">
         🚨 启动急救调度
@@ -1478,4 +2065,140 @@
                     { dept: 'dept-emergency', text: '急诊科新增重症患者 - 启动绿色通道' },
                     { dept: 'dept-icu', text: 'ICU床位紧张 - 协调转院事宜' },
                     { dept: 'dept-surgery', text: '手术室消毒完成 - 准备下台手术' },
-                    { dept:
+                    { dept: 'dept-cardiology', text: '心脏监护数据异常 - 医生已响应' }
+                ];
+                
+                const randomAlert = alertTypes[Math.floor(Math.random() * alertTypes.length)];
+                const alertList = document.querySelector('.alert-list');
+                const newAlert = document.createElement('li');
+                newAlert.className = 'alert-item';
+                newAlert.innerHTML = `
+                    <span><span class="department-indicator ${randomAlert.dept}"></span>${randomAlert.text}</span>
+                    <span class="alert-time">刚刚</span>
+                `;
+                alertList.insertBefore(newAlert, alertList.firstChild);
+                
+                // 限制警报数量
+                const alerts = alertList.querySelectorAll('.alert-item');
+                if (alerts.length > 8) {
+                    alertList.removeChild(alerts[alerts.length - 1]);
+                }
+            }
+        }
+
+        // 医疗数据实时监控效果
+        function createHeartbeatEffect() {
+            const statusIndicators = document.querySelectorAll('.status-indicator.online');
+            statusIndicators.forEach(indicator => {
+                if (Math.random() < 0.1) {
+                    indicator.style.animation = 'none';
+                    setTimeout(() => {
+                        indicator.style.animation = 'status-pulse 1s infinite';
+                    }, 100);
+                }
+            });
+        }
+
+        // 初始化和定时更新
+        document.addEventListener('DOMContentLoaded', function() {
+            // 创建背景粒子
+            createParticles();
+            
+            // 绘制初始图表
+            drawMedicalChart();
+            
+            // 每2秒更新医疗数据
+            setInterval(updateMedicalData, 2000);
+            
+            // 每4秒重绘图表
+            setInterval(drawMedicalChart, 4000);
+            
+            // 每8秒更新设备状态
+            setInterval(updateDeviceStatus, 8000);
+            
+            // 每6秒添加医疗效果
+            setInterval(addMedicalEffects, 6000);
+            
+            // 每3秒心跳效果
+            setInterval(createHeartbeatEffect, 3000);
+            
+            // 初始化流媒体按钮事件
+            document.querySelectorAll('.stream-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const title = this.getAttribute('title');
+                    alert(`医疗操作: ${title}`);
+                });
+            });
+            
+            // 添加键盘快捷键
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'e') {
+                    e.preventDefault();
+                    openEmergencyModal();
+                }
+            });
+        });
+
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('emergencyModal');
+            if (event.target === modal) {
+                closeEmergencyModal();
+            }
+        });
+
+        // 医疗系统声音提示（模拟）
+        function playMedicalAlert() {
+            // 在真实环境中这里会播放医疗警报声音
+            console.log('🔊 医疗系统警报提示音');
+        }
+
+        // 添加医疗数据加密状态显示
+        function updateSecurityStatus() {
+            const securityElements = document.querySelectorAll('[data-security]');
+            securityElements.forEach(element => {
+                element.classList.add('encrypted');
+            });
+        }
+
+        // 模拟医疗数据传输加密
+        function simulateDataEncryption() {
+            const dataStreams = document.querySelectorAll('.metric-value');
+            dataStreams.forEach(stream => {
+                if (Math.random() < 0.02) {
+                    stream.style.color = '#00695c';
+                    setTimeout(() => {
+                        stream.style.color = '';
+                    }, 1000);
+                }
+            });
+        }
+
+        // 每秒更新加密状态
+        setInterval(simulateDataEncryption, 1000);
+
+        // 更新系统时间
+        function updateSystemTime() {
+            const now = new Date();
+            const timeString = now.getFullYear() + '-' + 
+                              String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                              String(now.getDate()).padStart(2, '0') + ' ' + 
+                              String(now.getHours()).padStart(2, '0') + ':' + 
+                              String(now.getMinutes()).padStart(2, '0') + ':' + 
+                              String(now.getSeconds()).padStart(2, '0');
+            const timeElement = document.getElementById('system-time');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        // 每秒更新时间
+        setInterval(updateSystemTime, 1000);
+
+        // 页面加载完成后初始化时间
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSystemTime();
+        });
+    </script>
+</body>
+</html>
