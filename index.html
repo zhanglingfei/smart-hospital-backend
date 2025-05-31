@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>远程医疗流媒体服务器管理中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #2c5aa0;
+            --light-blue: #4a90e2;
+            --accent-red: #e74c3c;
+            --white: #ffffff;
+            --light-gray: #f8fafc;
+            --dark-gray: #34495e;
+            --success-green: #27ae60;
+            --warning-orange: #f39c12;
+            --shadow: 0 4px 20px rgba(44, 90, 160, 0.1);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            color: white;
+            padding: 20px 30px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            color: var(--primary-blue);
+        }
+
+        .header-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .status-indicators {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-item {
+            text-align: center;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+        }
+
+        .status-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+        }
+
+        .status-label {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+
+        .main-container {
+            max-width: 1800px;
+            margin: 30px auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px 0;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 25px;
+            color: var(--dark-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(90deg, #e3f2fd, #ffffff);
+            color: var(--primary-blue);
+            border-left-color: var(--primary-blue);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+
+        .content-area {
+            display: grid;
+            gap: 25px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--light-blue);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(44, 90, 160, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f3f4;
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .metric-item:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-weight: bold;
+            color: var(--primary-blue);
+            font-size: 1.1em;
+        }
+
+        .metric-value.critical {
+            color: var(--accent-red);
+        }
+
+        .metric-value.success {
+            color: var(--success-green);
+        }
+
+        .metric-value.warning {
+            color: var(--warning-orange);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill.high {
+            background: linear-gradient(90deg, var(--success-green), var(--warning-orange));
+        }
+
+        .progress-fill.medium {
+            background: linear-gradient(90deg, var(--light-blue), var(--primary-blue));
+        }
+
+        .progress-fill.critical {
+            background: linear-gradient(90deg, var(--warning-orange), var(--accent-red));
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .device-card {
+            background: #f8fafc;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .device-card.online {
+            border-color: var(--success-green);
+            background: #f0fff4;
+        }
+
+        .device-card.offline {
+            border-color: var(--accent-red);
+            background: #fff5f5;
+        }
+
+        .device-card.warning {
+            border-color: var(--warning-orange);
+            background: #fffbf0;
+        }
+
+        .device-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .device-icon.online {
+            background: linear-gradient(135deg, var(--success-green), #2ecc71);
+        }
+
+        .device-icon.offline {
+            background: linear-gradient(135deg, var(--accent-red), #c0392b);
+        }
+
+        .device-icon.warning {
+            background: linear-gradient(135deg, var(--warning-orange), #e67e22);
+        }
+
+        .device-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--dark-gray);
+        }
+
+        .device-status {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .device-status.online {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .device-status.offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .device-status.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .video-stream-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .stream-preview {
+            background: #000;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            position: relative;
+            aspect-ratio: 16/9;
+        }
+
+        .stream-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .stream-controls {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .stream-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary-blue);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stream-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .real-time-chart {
+            height: 300px;
+            background: #f8fafc;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-line {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(74, 144, 226, 0.1));
+        }
+
+        .alert-panel {
+            background: linear-gradient(135deg, #fff5f5, #ffffff);
+            border: 2px solid var(--accent-red);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .alert-icon {
+            width: 30px;
+            height: 30px;
+            background: var(--accent-red);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+
+        .alert-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--accent-red);
+        }
+
+        .alert-list {
+            list-style: none;
+        }
+
+        .alert-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f3f4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+
+        .alert-time {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.online {
+            background: var(--success-green);
+        }
+
+        .status-indicator.offline {
+            background: var(--accent-red);
+        }
+
+        .status-indicator.warning {
+            background: var(--warning-orange);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .emergency-btn {
+            background: linear-gradient(135deg, var(--accent-red), #c0392b);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .emergency-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .status-indicators {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🏥</div>
+                <div>
+                    <div class="header-title">远程医疗流媒体服务器</div>
+                    <div class="header-subtitle">Rakuten Mobile × Terabox 管理中心</div>
+                </div>
+            </div>
+            <div class="status-indicators">
+                <div class="status-item">
+                    <div class="status-value" id="online-count">23</div>
+                    <div class="status-label">在线用户</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="bandwidth-usage">856</div>
+                    <div class="status-label">带宽 (Mbps)</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="system-health">99.8%</div>
+                    <div class="status-label">系统健康度</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="active-streams">8</div>
+                    <div class="status-label">活跃流</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- 侧边导航栏 -->
+        <nav class="sidebar">
+            <a href="#dashboard" class="nav-item active">
+                <div class="nav-icon">📊</div>
+                <span>仪表板总览</span>
+            </a>
+            <a href="#video-streams" class="nav-item">
+                <div class="nav-icon">📹</div>
+                <span>视频流管理</span>
+            </a>
+            <a href="#devices" class="nav-item">
+                <div class="nav-icon">🖥️</div>
+                <span>设备监控</span>
+            </a>
+            <a href="#network" class="nav-item">
+                <div class="nav-icon">🌐</div>
+                <span>网络状态</span>
+            </a>
+            <a href="#users" class="nav-item">
+                <div class="nav-icon">👥</div>
+                <span>用户管理</span>
+            </a>
+            <a href="#security" class="nav-item">
+                <div class="nav-icon">🔒</div>
+                <span>安全中心</span>
+            </a>
+            <a href="#analytics" class="nav-item">
+                <div class="nav-icon">📈</div>
+                <span>数据分析</span>
+            </a>
+            <a href="#settings" class="nav-item">
+                <div class="nav-icon">⚙️</div>
+                <span>系统设置</span>
+            </a>
+        </nav>
+
+        <!-- 主内容区域 -->
+        <main class="content-area">
+            <!-- 系统警报 -->
+            <div class="alert-panel">
+                <div class="alert-header">
+                    <div class="alert-icon">⚠️</div>
+                    <div class="alert-title">系统警报</div>
+                </div>
+                <ul class="alert-list">
+                    <li class="alert-item">
+                        <span>摄像头 #3 信号质量下降至85%</span>
+                        <span class="alert-time">2分钟前</span>
+                    </li>
+                    <li class="alert-item">
+                        <span>支援医院 #2 网络延迟增高至45ms</span>
+                        <span class="alert-time">5分钟前</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 仪表板网格 -->
+            <div class="dashboard-grid">
+                <!-- 带宽监控卡片 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">📊</div>
+                            带宽使用监控
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">总带宽容量</span>
+                        <span class="metric-value">1.12 Gbps</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">当前使用量</span>
+                        <span class="metric-value warning" id="current-bandwidth">856 Mbps</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill high" id="bandwidth-progress" style="width: 76.4%"></div>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">使用率</span>
+                        <span class="metric-value warning" id="bandwidth-percentage">76.4%</span>
+                    </div>
+                </div>
+
+                <!-- 视频流状态 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">📹</div>
+                            8K视频流状态
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">8K摄像头 #1</span>
+                        <span class="metric-value success">✅ 正常 140Mbps</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">8K摄像头 #2</span>
+                        <span class="metric-value success">✅ 正常 140Mbps</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">8K摄像头 #3</span>
+                        <span class="metric-value warning">⚠️ 信号质量85%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">总编码流数量</span>
+                        <span class="metric-value">8路同时</span>
+                    </div>
+                </div>
+
+                <!-- 医院连接状态 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">🏥</div>
+                            医院连接状态
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">中心医院</span>
+                        <span class="metric-value success">
+                            <div class="status-indicator online"></div>
+                            在线 - 1ms延迟
+                        </span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">支援医院 #1</span>
+                        <span class="metric-value success">
+                            <div class="status-indicator online"></div>
+                            在线 - 23ms延迟
+                        </span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">支援医院 #2</span>
+                        <span class="metric-value warning">
+                            <div class="status-indicator warning"></div>
+                            在线 - 45ms延迟
+                        </span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">总在线用户</span>
+                        <span class="metric-value" id="total-users">23人</span>
+                    </div>
+                </div>
+
+                <!-- 系统性能 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">🖥️</div>
+                            服务器性能
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">CPU使用率</span>
+                        <span class="metric-value warning" id="cpu-usage">68%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill medium" id="cpu-progress" style="width: 68%"></div>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">内存使用率</span>
+                        <span class="metric-value" id="memory-usage">45%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill medium" id="memory-progress" style="width: 45%"></div>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">存储空间</span>
+                        <span class="metric-value success">78% 可用</span>
+                    </div>
+                </div>
+
+                <!-- 实时数据图表 -->
+                <div class="card" style="grid-column: span 2;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">📈</div>
+                            实时带宽使用趋势
+                        </div>
+                    </div>
+                    <div class="real-time-chart">
+                        <canvas id="bandwidthChart" width="600" height="250"></canvas>
+                    </div>
+                </div>
+
+                <!-- 设备监控 -->
+                <div class="card" style="grid-column: span 2;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">📱</div>
+                            设备状态监控
+                        </div>
+                    </div>
+                    <div class="device-grid">
+                        <div class="device-card online">
+                            <div class="device-icon online">📹</div>
+                            <div class="device-name">8K摄像头 #1</div>
+                            <div class="device-status online">在线</div>
+                        </div>
+                        <div class="device-card online">
+                            <div class="device-icon online">📹</div>
+                            <div class="device-name">8K摄像头 #2</div>
+                            <div class="device-status online">在线</div>
+                        </div>
+                        <div class="device-card warning">
+                            <div class="device-icon warning">📹</div>
+                            <div class="device-name">8K摄像头 #3</div>
+                            <div class="device-status warning">信号弱</div>
+                        </div>
+                        <div class="device-card online">
+                            <div class="device-icon online">🖥️</div>
+                            <div class="device-name">8K显示器 #1</div>
+                            <div class="device-status online">在线</div>
+                        </div>
+                        <div class="device-card online">
+                            <div class="device-icon online">🤖</div>
+                            <div class="device-name">AI机器人</div>
+                            <div class="device-status online">巡航中</div>
+                        </div>
+                        <div class="device-card online">
+                            <div class="device-icon online">📡</div>
+                            <div class="device-name">网络中继</div>
+                            <div class="device-status online">正常</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 视频流预览 -->
+                <div class="card" style="grid-column: span 3;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">🎥</div>
+                            实时视频流预览
+                        </div>
+                    </div>
+                    <div class="video-stream-grid">
+                        <div class="stream-preview">
+                            <div class="stream-overlay">8K主摄像头</div>
+                            <iframe style="width: 100%; height: 100%; border: none; border-radius: 8px;" 
+                                    src="https://www.youtube.com/embed/QqI9eKQnFL4?autoplay=1&mute=1&loop=1&playlist=QqI9eKQnFL4&controls=0&showinfo=0&rel=0&modestbranding=1">
+                            </iframe>
+                            <div class="stream-controls">
+                                <button class="stream-btn" title="录制">⏺️</button>
+                                <button class="stream-btn" title="截图">📷</button>
+                                <button class="stream-btn" title="设置">⚙️</button>
+                            </div>
+                        </div>
+                        <div class="stream-preview">
+                            <div class="stream-overlay">8K副摄像头 #1</div>
+                            <iframe style="width: 100%; height: 100%; border: none; border-radius: 8px;" 
+                                    src="https://www.youtube.com/embed/G5RpJwCJDqc?autoplay=1&mute=1&loop=1&playlist=G5RpJwCJDqc&controls=0&showinfo=0&rel=0&modestbranding=1">
+                            </iframe>
+                            <div class="stream-controls">
+                                <button class="stream-btn" title="录制">⏺️</button>
+                                <button class="stream-btn" title="截图">📷</button>
+                                <button class="stream-btn" title="设置">⚙️</button>
+                            </div>
+                        </div>
+                        <div class="stream-preview">
+                            <div class="stream-overlay">8K副摄像头 #2</div>
+                            <iframe style="width: 100%; height: 100%; border: none; border-radius: 8px;" 
+                                    src="https://www.youtube.com/embed/hin4n57gPUc?autoplay=1&mute=1&loop=1&playlist=hin4n57gPUc&controls=0&showinfo=0&rel=0&modestbranding=1">
+                            </iframe>
+                            <div class="stream-controls">
+                                <button class="stream-btn" title="录制">⏺️</button>
+                                <button class="stream-btn" title="截图">📷</button>
+                                <button class="stream-btn" title="设置">⚙️</button>
+                            </div>
+                        </div>
+                        <div class="stream-preview">
+                            <div class="stream-overlay">AI机器人视角</div>
+                            <iframe style="width: 100%; height: 100%; border: none; border-radius: 8px;" 
+                                    src="https://www.youtube.com/embed/H9vevyszht4?autoplay=1&mute=1&loop=1&playlist=H9vevyszht4&controls=0&showinfo=0&rel=0&modestbranding=1">
+                            </iframe>
+                            <div class="stream-controls">
+                                <button class="stream-btn" title="控制机器人">🎮</button>
+                                <button class="stream-btn" title="录制">⏺️</button>
+                                <button class="stream-btn" title="设置">⚙️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 网络质量监控 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">📶</div>
+                            网络质量监控
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">平均延迟</span>
+                        <span class="metric-value success" id="avg-latency">23ms</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">丢包率</span>
+                        <span class="metric-value success" id="packet-loss">0.02%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">WiFi 7连接数</span>
+                        <span class="metric-value" id="wifi-connections">12个</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">网络安全状态</span>
+                        <span class="metric-value success">🔒 安全隔离</span>
+                    </div>
+                </div>
+
+                <!-- 存储和备份 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <div class="card-icon">💾</div>
+                            存储和备份
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">录像存储空间</span>
+                        <span class="metric-value">2.3TB / 10TB</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill medium" style="width: 23%"></div>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">自动备份状态</span>
+                        <span class="metric-value success">✅ 已启用</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">最近备份时间</span>
+                        <span class="metric-value">15分钟前</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 紧急呼叫按钮 -->
+    <button class="emergency-btn" onclick="openEmergencyModal()">
+        🚨 紧急呼叫
+    </button>
+
+    <!-- 紧急呼叫模态框 -->
+    <div id="emergencyModal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: var(--accent-red); margin-bottom: 20px;">🚨 紧急呼叫系统</h2>
+            <p style="margin-bottom: 30px;">是否启动紧急医疗呼叫？这将通知所有在线医护人员。</p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button style="background: var(--accent-red); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;" onclick="triggerEmergency()">
+                    确认呼叫
+                </button>
+                <button style="background: #ccc; color: #333; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;" onclick="closeEmergencyModal()">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 实时数据更新
+        function updateRealTimeData() {
+            // 更新带宽使用
+            const bandwidthElement = document.getElementById('current-bandwidth');
+            const bandwidthProgress = document.getElementById('bandwidth-progress');
+            const bandwidthPercentage = document.getElementById('bandwidth-percentage');
+            
+            const newBandwidth = Math.floor(Math.random() * 200) + 750; // 750-950 Mbps
+            const percentage = (newBandwidth / 1120 * 100).toFixed(1);
+            
+            bandwidthElement.textContent = newBandwidth + ' Mbps';
+            bandwidthPercentage.textContent = percentage + '%';
+            bandwidthProgress.style.width = percentage + '%';
+            
+            // 更新CPU和内存
+            const cpuUsage = document.getElementById('cpu-usage');
+            const cpuProgress = document.getElementById('cpu-progress');
+            const memoryUsage = document.getElementById('memory-usage');
+            const memoryProgress = document.getElementById('memory-progress');
+            
+            const newCpu = Math.floor(Math.random() * 30) + 50; // 50-80%
+            const newMemory = Math.floor(Math.random() * 20) + 40; // 40-60%
+            
+            cpuUsage.textContent = newCpu + '%';
+            cpuProgress.style.width = newCpu + '%';
+            memoryUsage.textContent = newMemory + '%';
+            memoryProgress.style.width = newMemory + '%';
+            
+            // 更新在线用户数
+            const onlineCount = document.getElementById('online-count');
+            const totalUsers = document.getElementById('total-users');
+            const newUserCount = Math.floor(Math.random() * 10) + 20; // 20-30人
+            
+            onlineCount.textContent = newUserCount;
+            totalUsers.textContent = newUserCount + '人';
+            
+            // 更新延迟
+            const avgLatency = document.getElementById('avg-latency');
+            const newLatency = Math.floor(Math.random() * 20) + 15; // 15-35ms
+            avgLatency.textContent = newLatency + 'ms';
+            
+            // 更新丢包率
+            const packetLoss = document.getElementById('packet-loss');
+            const newPacketLoss = (Math.random() * 0.1).toFixed(3); // 0-0.1%
+            packetLoss.textContent = newPacketLoss + '%';
+        }
+
+        // 导航菜单切换
+        function switchTab(tabName) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            event.target.closest('.nav-item').classList.add('active');
+        }
+
+        // 绑定导航事件
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', switchTab);
+        });
+
+        // 紧急呼叫模态框
+        function openEmergencyModal() {
+            document.getElementById('emergencyModal').style.display = 'block';
+        }
+
+        function closeEmergencyModal() {
+            document.getElementById('emergencyModal').style.display = 'none';
+        }
+
+        function triggerEmergency() {
+            alert('🚨 紧急呼叫已发送！所有在线医护人员已收到通知。');
+            closeEmergencyModal();
+            
+            // 添加紧急警报到系统
+            const alertList = document.querySelector('.alert-list');
+            const newAlert = document.createElement('li');
+            newAlert.className = 'alert-item';
+            newAlert.innerHTML = `
+                <span style="color: var(--accent-red); font-weight: bold;">🚨 紧急呼叫已触发</span>
+                <span class="alert-time">刚刚</span>
+            `;
+            alertList.insertBefore(newAlert, alertList.firstChild);
+        }
+
+        // 绘制实时图表
+        function drawBandwidthChart() {
+            const canvas = document.getElementById('bandwidthChart');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // 清除画布
+            ctx.clearRect(0, 0, width, height);
+            
+            // 设置样式
+            ctx.strokeStyle = '#4a90e2';
+            ctx.lineWidth = 3;
+            ctx.fillStyle = 'rgba(74, 144, 226, 0.1)';
+            
+            // 生成数据点
+            const dataPoints = [];
+            const currentTime = Date.now();
+            for (let i = 0; i < 60; i++) {
+                const value = Math.sin(i * 0.1) * 100 + Math.random() * 50 + 400;
+                dataPoints.push(value);
+            }
+            
+            // 绘制线图
+            ctx.beginPath();
+            ctx.moveTo(0, height - (dataPoints[0] / 1000) * height);
+            
+            for (let i = 1; i < dataPoints.length; i++) {
+                const x = (i / (dataPoints.length - 1)) * width;
+                const y = height - (dataPoints[i] / 1000) * height;
+                ctx.lineTo(x, y);
+            }
+            
+            ctx.stroke();
+            
+            // 绘制填充区域
+            ctx.lineTo(width, height);
+            ctx.lineTo(0, height);
+            ctx.closePath();
+            ctx.fill();
+            
+            // 添加网格线
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i <= 10; i++) {
+                const y = (i / 10) * height;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+        }
+
+        // 模拟设备状态变化
+        function updateDeviceStatus() {
+            const deviceCards = document.querySelectorAll('.device-card');
+            deviceCards.forEach((card, index) => {
+                if (Math.random() < 0.1) { // 10%概率状态变化
+                    const statusClasses = ['online', 'warning', 'offline'];
+                    const currentStatus = card.classList[1];
+                    let newStatus = statusClasses[Math.floor(Math.random() * statusClasses.length)];
+                    
+                    // 移除旧状态
+                    card.classList.remove(currentStatus);
+                    card.querySelector('.device-icon').classList.remove(currentStatus);
+                    card.querySelector('.device-status').classList.remove(currentStatus);
+                    
+                    // 添加新状态
+                    card.classList.add(newStatus);
+                    card.querySelector('.device-icon').classList.add(newStatus);
+                    card.querySelector('.device-status').classList.add(newStatus);
+                    
+                    // 更新状态文字
+                    const statusText = {
+                        'online': '在线',
+                        'warning': '信号弱',
+                        'offline': '离线'
+                    };
+                    card.querySelector('.device-status').textContent = statusText[newStatus];
+                }
+            });
+        }
+
+        // 初始化和定时更新
+        document.addEventListener('DOMContentLoaded', function() {
+            // 绘制初始图表
+            drawBandwidthChart();
+            
+            // 每3秒更新实时数据
+            setInterval(updateRealTimeData, 3000);
+            
+            // 每5秒重绘图表
+            setInterval(drawBandwidthChart, 5000);
+            
+            // 每10秒更新设备状态
+            setInterval(updateDeviceStatus, 10000);
+            
+            // 初始化流媒体按钮事件
+            document.querySelectorAll('.stream-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const title = this.getAttribute('title');
+                    alert(`执行操作: ${title}`);
+                });
+            });
+        });
+
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('emergencyModal');
+            if (event.target === modal) {
+                closeEmergencyModal();
+            }
+        });
+    </script>
+</body>
+</html>
+                            
